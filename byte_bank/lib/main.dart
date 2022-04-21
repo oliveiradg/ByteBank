@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, null_check_always_fails, deprecated_member_use, dead_code
 
 import 'package:flutter/material.dart';
 
@@ -35,30 +35,17 @@ class FormularioTransferencia extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _controladorCampoNumeroConta,
-              style: TextStyle(
-                fontSize: 24.0,
-              ),
-              decoration: InputDecoration(
-                  labelText: 'Número da conta', hintText: '0000'),
-              keyboardType: TextInputType.number,
-            ),
+          Editor(
+            controlador: _controladorCampoNumeroConta,
+            rotulo: 'Número da Conta',
+            dica: '0000',
+            icone: null!,
           ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _controladorCampoValor,
-              style: TextStyle(
-                fontSize: 24.0,
-              ),
-              decoration: InputDecoration(
-                  icon: Icon(Icons.monetization_on),
-                  labelText: 'Valor',
-                  hintText: '0.00'),
-            ),
+          Editor(
+            controlador: _controladorCampoValor,
+            rotulo: 'Valor',
+            dica: '0.00',
+            icone: Icons.monetization_on,
           ),
           RaisedButton(
             child: const Text('Confirmar'),
@@ -70,11 +57,44 @@ class FormularioTransferencia extends StatelessWidget {
               if (numeroConta != null && valor != null) {
                 final transferenciaCriada =
                     Transferencia(valor: valor, numeroConta: numeroConta);
-                debugPrint('$transferenciaCriada');
               }
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class Editor extends StatelessWidget {
+  final TextEditingController controlador;
+  final String rotulo;
+  final String dica;
+  final IconData icone;
+
+  const Editor(
+      {Key? key,
+      required this.controlador,
+      required this.rotulo,
+      required this.dica,
+      required this.icone})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: TextField(
+        controller: controlador,
+        style: TextStyle(
+          fontSize: 24.0,
+        ),
+        decoration: InputDecoration(
+          icon: Icon(icone),
+          labelText: rotulo,
+          hintText: dica,
+        ),
+        keyboardType: TextInputType.number,
       ),
     );
   }
